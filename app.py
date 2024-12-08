@@ -50,7 +50,7 @@ def fetch_instagram_data(username):
 def download_profile_picture(profile_data):
     """
     Download profile picture
-    """
+    """   
     try:
         image_url = profile_data.get('hd_profile_pic_url_info', {}).get('url')
         if image_url:
@@ -77,6 +77,7 @@ def download_posts(posts_data):
     Download post images
     """
     downloaded_posts = []
+    captions = []
     try:
         items = posts_data.get('items', [])
         os.makedirs("downloads/posts", exist_ok=True)
@@ -92,12 +93,24 @@ def download_posts(posts_data):
                         with open(filename, 'wb') as file:
                             file.write(response.content)
                         downloaded_posts.append(filename)
+                        # Create a dynamic caption
+                        captions.append(f"Post {index + 1}")
     except Exception as e:
         st.warning(f"Error downloading posts: {e}")
     
-    return downloaded_posts
+    return downloaded_posts, captions
 
 def main():
+    # ... (previous code remains the same)
+
+    # Download and Display Posts
+    st.subheader("Post Images")
+    downloaded_posts, post_captions = download_posts(posts_data)
+    
+    # Display downloaded post images with matching captions
+    if downloaded_posts:
+        st.image(downloaded_posts, width=200, caption=post_captions)
+        
     st.title("Instagram Profile Scraper")
     
     # User input
