@@ -78,26 +78,46 @@ def download_posts(posts_data):
     """
     downloaded_posts = []
     captions = []
+    if not posts_data:
+        st.warning("No post data available.")
+        return [], []
+
     try:
         items = posts_data.get('items', [])
+
+          # Check if items list is empty
+        if not items:
+            st.warning("No posts found for this account.")
+            return [], []
+        
         os.makedirs("downloads/posts", exist_ok=True)
         
-        for index, item in enumerate(items):
+        for index, item in enumerate(items[:10]):
             image_versions = item.get('image_versions', {}).get('items', [])
             for img in image_versions:
-                image_url = img.get('url')
+                image_url = image_versions[0].get('url')
                 if image_url:
-                    response = requests.get(image_url)
-                    if response.status_code == 200:
-                        filename = f"downloads/posts/post_{index}.jpg"
-                        with open(filename, 'wb') as file:
-                            file.write(response.content)
-                        downloaded_posts.append(filename)
-                        # Create a dynamic caption
-                        captions.append(f"Post {index + 1}")
+                    try:
+                        response = requests.get(image_url, timeout=10)
+                        
+                        if response.status_code == 200:
+                            filename = f"downloads/posts/post_{index}.jpg"
+                            with open(filename, 'wb') as file:
+                                file.write(response.content)
+                            
+                            downloaded_posts.append(filename)
+                            captions.append(f"Post {index + 1}")
+                    except requests.RequestException as e:
+                        st.warning(f"Could not download post {index + 1}: {e}")
     except Exception as e:
-        st.warning(f"Error downloading posts: {e}")
+        st.error(f"Unexpected error in downloading posts: {e}")
+        return [], []
     
+    if downloaded_posts:
+        st.info(f"Successfully downloaded {len(downloaded_posts)} posts")
+    else:
+        st.warning("No posts could be downloaded")
+
     return downloaded_posts, captions
 
 def main():
@@ -105,11 +125,16 @@ def main():
 
     # Download and Display Posts
     st.subheader("Post Images")
-    downloaded_posts, post_captions = download_posts(posts_data)
+    if posts_data:
+        downloaded_posts, post_captions = download_posts(posts_data)
     
     # Display downloaded post images with matching captions
-    if downloaded_posts:
-        st.image(downloaded_posts, width=200, caption=post_captions)
+        if downloaded_posts:
+            st.image(downloaded_posts, width=200, caption=post_captions)
+        else:
+            st.warning("No posts could be displayed")
+    else:
+        st.error("No post data available to download")
         
     st.title("Instagram Profile Scraper")
     
