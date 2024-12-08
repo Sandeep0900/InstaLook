@@ -152,12 +152,17 @@ def main():
                 if profile_pic_url:
                     try:
                         # Validate the profile picture URL by attempting to fetch it
+                        os.makedirs("downloads", exist_ok=True)
                         response = requests.get(profile_pic_url, timeout=10)
                         if response.status_code == 200:
-                            profile = download_profile(response)
-                            st.image(profile, width=200, caption="Profile Picture")
+                            filename = "downloads/profile/profile_pic.jpg"
+                            with open(filename, 'wb') as file:
+                                file.write(response.content)         
+                        profile_pic_path = download_profile_picture(profile_pic_url)
+                        if profile_pic_path:
+                            st.image(profile_pic_path, width=200, caption="Profile Picture")
                         else:
-                            st.warning("Profile picture URL could not be loaded.")
+                            st.warning("Could not download profile picture.")
                     except requests.RequestException as e:
                         st.warning(f"Could not fetch profile picture: {e}")
                 else:
