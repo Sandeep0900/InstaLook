@@ -154,8 +154,8 @@ def main():
                         # Validate the profile picture URL by attempting to fetch it
                         response = requests.get(profile_pic_url, timeout=10)
                         if response.status_code == 200:
-                            profile_pic_url = download_posts(profile_pic_url)
-                            st.image(profile_pic_url, width=200, caption="Profile Picture")
+                            profile = download_profile(response)
+                            st.image(profile, width=200, caption="Profile Picture")
                         else:
                             st.warning("Profile picture URL could not be loaded.")
                     except requests.RequestException as e:
