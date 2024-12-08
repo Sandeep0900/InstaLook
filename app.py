@@ -8,11 +8,6 @@ import pandas as pd
 RAPIDAPI_HOST = "instagram-scraper-api2.p.rapidapi.com"
 RAPIDAPI_KEY = "1c1945f03emsh1a3b86f3327e4dep161688jsnd0e6c5d24c22"
 
-
-# RapidAPI Configuration
-RAPIDAPI_HOST = "instagram-scraper-api2.p.rapidapi.com"
-RAPIDAPI_KEY = st.secrets.get("RAPIDAPI_KEY")  # Use Streamlit secrets for API key
-
 def fetch_instagram_data(username):
     """
     Fetch Instagram data for a given username
