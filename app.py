@@ -155,7 +155,7 @@ def main():
                         os.makedirs("downloads", exist_ok=True)
                         response = requests.get(profile_pic_url, timeout=10)
                         if response.status_code == 200:
-                            filename = "downloads/profile/profile_pic.jpg"
+                            filename = "downloads/profile_pic.jpg"
                             with open(filename, 'wb') as file:
                                 file.write(response.content)         
                         profile_pic_path = download_profile_picture(profile_pic_url)
