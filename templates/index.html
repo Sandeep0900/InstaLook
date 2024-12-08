@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Instagram Data Fetcher</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fetch Instagram Data</h1>
+        <form action="/fetch" method="post">
+            <input type="text" name="username" placeholder="Enter Instagram Username" required>
+            <button type="submit">Fetch</button>
+        </form>
+    </div>
+
+    <div class="container">
+        {% if error %}
+            <h2>Error: {{ error }}</h2>
+        {% else %}
+            {% if profile %}
+                <div class="profile">
+                    <img src="/static/images/downloaded_image.jpg" alt="Profile Picture">
+                    <h2>{{ profile.username }}</h2>
+                    <p>{{ profile.biography }}</p>
+                    <p>Followers: {{ profile.follower_count }}</p>
+                    <p>Following: {{ profile.following_count }}</p>
+                </div>
+            <form action="/following" method="get">
+                <button type="submit">Fetch</button>
+            </form>
+            {% else %}
+                <h2>Profile data is unavailable.</h2>
+            {% endif %}
+
+            {% if posts %}
+            <div class="posts">
+                {% for image_file in image_files %}
+                    <div class="post">
+                        <img src="{{ url_for('static', filename='images/posts/' + image_file) }}" alt="Post Image">
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2>No posts available.</h2>
+        {% endif %}
+    {% endif %}
+</div>
+</body>
+</html>
