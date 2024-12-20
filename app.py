@@ -150,7 +150,6 @@ def main():
                     profile_pic_path = download_profile_picture(profile_pic_url)
                     if profile_pic_path:
                         st.image(profile_pic_path, width=200, caption="Profile Picture")
-                        st.write(f"**profile-pic ID:** {profile_data.get('profile_pic_id')}")
                     else:
                         st.warning("Could not download profile picture.")
                 else:
