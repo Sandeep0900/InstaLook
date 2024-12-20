@@ -32,7 +32,7 @@ def fetch_instagram_data(username):
 
         if profile_data.get('is_private', True):
             profile_url = f"https://{RAPIDAPI_HOST}/v1.2/info?username_or_id_or_url={username}"
-            profile_response = requests.get(posts_url, headers=headers, timeout=10)
+            profile_response = requests.get(profile_url, headers=headers, timeout=10)
             if profile_response.status_code != 200:
                 st.error(f"Failed to fetch posts. Status code: {profile_response.status_code}")
                 return profile_data, None, None
