@@ -152,7 +152,7 @@ def main():
             with col2:
                 st.write(f"**Username:** {profile_data.get('username')}")
                 st.write(f"**Full Name:** {profile_data.get('full_name')}")
-                st.write(f"**Bio:** {profile_data.get('bio')}")
+                st.write(f"**Biography:** {profile_data.get('biography')}")
                 st.write(f"**Followers:** {profile_data.get('follower_count')}")
                 st.write(f"**Following:** {profile_data.get('following_count')}")
                 
