@@ -31,9 +31,14 @@ def fetch_instagram_data(username):
         profile_data = profile_response.json().get('data', {})
 
         if profile_data.get('is_private', True):
-            st.error("The account is private and cannot be fetched.")
-            return None, None, None
+            profile_url = f"https://{RAPIDAPI_HOST}/v1.2/info?username_or_id_or_url={username}"
+            profile_response = requests.get(posts_url, headers=headers, timeout=10)
+            if profile_response.status_code != 200:
+                st.error(f"Failed to fetch posts. Status code: {profile_response.status_code}")
+                return profile_data, None, None
 
+            profile_data = profile_response.json().get('data', {})
+            return profile_data, None, None
         # Fetch posts
         posts_url = f"https://{RAPIDAPI_HOST}/v1.2/posts?username_or_id_or_url={username}"
         posts_response = requests.get(posts_url, headers=headers, timeout=10)
@@ -42,6 +47,7 @@ def fetch_instagram_data(username):
             return profile_data, None, None
 
         posts_data = posts_response.json().get('data', {})
+        
 
         # Fetch followers
         followers_url = f"https://{RAPIDAPI_HOST}/v1/following?username_or_id_or_url={username}"
