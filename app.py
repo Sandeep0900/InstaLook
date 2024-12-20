@@ -150,6 +150,7 @@ def main():
                     profile_pic_path = download_profile_picture(profile_pic_url)
                     if profile_pic_path:
                         st.image(profile_pic_path, width=200, caption="Profile Picture")
+                        st.write(f"**profile-pic ID:** {profile_data.get('profile_pic_id')}")
                     else:
                         st.warning("Could not download profile picture.")
                 else:
@@ -159,8 +160,11 @@ def main():
                 st.write(f"**Username:** {profile_data.get('username')}")
                 st.write(f"**Full Name:** {profile_data.get('full_name')}")
                 st.write(f"**Biography:** {profile_data.get('biography')}")
+                st.write(f"**No. of Post:** {profile_data.get('media_count')}")
                 st.write(f"**Followers:** {profile_data.get('follower_count')}")
                 st.write(f"**Following:** {profile_data.get('following_count')}")
+                st.write(f"**account type:** {profile_data.get('account_type')}")
+                st.write(f"**Instagram locate ID:** {profile_data.get('id')}")
                 
 
             st.subheader("Post Images")
